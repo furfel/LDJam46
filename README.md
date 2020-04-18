@@ -9,3 +9,4 @@ Maybe let's start with some keypoints:
 * feature my girlfriend in the game
 * some angel-like theme
 * modern times - dying battery of the phone?
+* Tiled as a map editor
