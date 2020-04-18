@@ -6,6 +6,7 @@ import flixel.FlxSprite;
 import flixel.input.FlxKeyManager;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxPoint;
+import objects.Fireball.FireballType;
 
 class Player extends FlxSprite
 {
@@ -35,14 +36,31 @@ class Player extends FlxSprite
 			cooldown -= elapsed;
 	}
 
-	private var cooldown:Float = 1;
+	private var mana:Float = 10000;
+	private var fastHit:Bool = false;
+
+	private var cooldown:Float = 0;
 
 	private function castSpell()
 	{
 		if (spell && cooldown <= 0)
 		{
-			FlxG.state.add(new Fireball(x, y, facing, LARGE));
-			cooldown = 1;
+			var type:FireballType = SMALL;
+
+			if (spellS)
+				type = SMALL;
+			if (spellM)
+				type = MEDIUM;
+			if (spellL)
+				type = LARGE;
+
+			var manacost = Fireball.GetManaCost(type);
+			if (mana >= manacost)
+			{
+				FlxG.state.add(new Fireball(x, y, facing, type));
+				mana -= manacost;
+				cooldown = fastHit ? Fireball.GetCooldownCost(type) / 1.5 : Fireball.GetCooldownCost(type);
+			}
 		}
 	}
 
@@ -107,6 +125,9 @@ class Player extends FlxSprite
 	private var down:Bool;
 	private var left:Bool;
 	private var right:Bool;
+	private var spellS:Bool;
+	private var spellM:Bool;
+	private var spellL:Bool;
 	private var spell:Bool;
 
 	private function getKeys()
@@ -115,7 +136,10 @@ class Player extends FlxSprite
 		down = press(FlxKey.S);
 		left = press(FlxKey.A);
 		right = press(FlxKey.D);
-		spell = press(FlxKey.O);
+		spellS = press(FlxKey.I);
+		spellM = press(FlxKey.O);
+		spellL = press(FlxKey.P);
+		spell = spellS || spellM || spellL;
 		if (up && down)
 			up = down = false;
 		if (left && right)

@@ -51,6 +51,28 @@ class Fireball extends FlxSprite
 
 		animation.play(anim);
 	}
+
+	public static function GetManaCost(type:FireballType):Int
+	{
+		if (type == SMALL)
+			return 10;
+		if (type == MEDIUM)
+			return 25;
+		if (type == LARGE)
+			return 40;
+		return 10000;
+	}
+
+	public static function GetCooldownCost(type:FireballType):Float
+	{
+		if (type == SMALL)
+			return 0.4;
+		if (type == MEDIUM)
+			return 0.6;
+		if (type == LARGE)
+			return 0.7;
+		return 0.0;
+	}
 }
 
 enum FireballType
