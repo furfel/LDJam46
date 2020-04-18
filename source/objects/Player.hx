@@ -3,6 +3,7 @@ package objects;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.addons.editors.tiled.TiledObject;
 import flixel.input.FlxKeyManager;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxPoint;
@@ -10,6 +11,11 @@ import objects.Fireball.FireballType;
 
 class Player extends FlxSprite
 {
+	public static function CreateFromObject(o:TiledObject):Player
+	{
+		return new Player(o.x, o.y);
+	}
+
 	public function new(X:Float, Y:Float)
 	{
 		super(X, Y);
