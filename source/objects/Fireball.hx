@@ -9,7 +9,7 @@ class Fireball extends FlxSprite
 	public function new(X:Float, Y:Float, direction:Int, type:FireballType)
 	{
 		super(X, Y);
-		loadGraphic("assets/images/fireball.png", true, 16, 16);
+		loadGraphic("assets/images/fireball.png", true, 32, 32);
 
 		setFacingFlip(FlxObject.DOWN, false, false);
 		setFacingFlip(FlxObject.UP, false, true);
@@ -48,6 +48,8 @@ class Fireball extends FlxSprite
 			velocity.rotate(FlxPoint.weak(0, 0), 180);
 		else
 			velocity.rotate(FlxPoint.weak(0, 0), 0);
+
+		animation.play(anim);
 	}
 }
 
