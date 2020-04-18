@@ -73,6 +73,18 @@ class Fireball extends FlxSprite
 			return 0.7;
 		return 0.0;
 	}
+
+	private var lifetime:Float = 2;
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		lifetime -= elapsed;
+		if (lifetime < 0)
+		{
+			kill();
+		}
+	}
 }
 
 enum FireballType
