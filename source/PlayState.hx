@@ -13,6 +13,9 @@ class PlayState extends FlxState
 	private var player:Player;
 	private var portal:Portal;
 	private var portalHolder:PortalHolder;
+	private var crystals:FlxTypedGroup<Crystal>;
+	private var crystalHolders:FlxTypedGroup<CrystalHolder>;
+	private var crystalPointers:FlxTypedGroup<CrystalTargetPointer>;
 
 	public var collisions:FlxTypedGroup<FlxObject> = new FlxTypedGroup<FlxObject>(1000);
 
@@ -34,6 +37,22 @@ class PlayState extends FlxState
 	{
 		add(this.portal = portal);
 		add(this.portal.getPortalHolder());
+
+		add(this.crystals = new FlxTypedGroup<Crystal>(6));
+		for (c in Crystal.CreateCrystalsOnPortal(this.portal))
+			this.crystals.add(c);
+
+		add(this.crystalHolders = new FlxTypedGroup<CrystalHolder>(6));
+		this.crystals.forEach((crystal) ->
+		{
+			crystalHolders.add(new CrystalHolder(crystal));
+		});
+
+		add(this.crystalPointers = new FlxTypedGroup<CrystalTargetPointer>(6));
+		this.crystals.forEach((crystal) ->
+		{
+			crystalPointers.add(crystal.getTargetPointer());
+		});
 	}
 
 	public function addCollision(object:FlxObject)
@@ -47,5 +66,6 @@ class PlayState extends FlxState
 	{
 		super.update(elapsed);
 		FlxG.collide(player, collisions);
+		FlxG.collide(player, crystalHolders);
 	}
 }

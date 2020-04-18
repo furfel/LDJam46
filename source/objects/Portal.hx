@@ -4,6 +4,7 @@ import Math;
 import flixel.FlxSprite;
 import flixel.addons.editors.tiled.TiledObject;
 import flixel.addons.effects.chainable.FlxWaveEffect;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 
 class Portal extends FlxSprite
@@ -14,7 +15,7 @@ class Portal extends FlxSprite
 	}
 
 	private var portalHolder:PortalHolder;
-	private var waveEffect:FlxWaveEffect;
+	private var crystals:FlxTypedGroup<Crystal>;
 
 	private static final AngleSpeed = 45.0;
 	private static final AlphaSpeedRadians = 1.2;
@@ -23,6 +24,7 @@ class Portal extends FlxSprite
 
 	private var alphaRadiansSin = 0.0;
 	private var hue:Float = 0;
+	private var activated:Bool = false;
 
 	public function new(X:Float, Y:Float)
 	{
@@ -39,6 +41,12 @@ class Portal extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		if (!activated)
+		{
+			alpha = 0;
+			return;
+		}
+
 		angle += elapsed * AngleSpeed;
 		if (angle >= 360)
 			angle -= 360;
@@ -49,5 +57,11 @@ class Portal extends FlxSprite
 
 		alphaRadiansSin += AlphaSpeedRadians * elapsed;
 		alpha = CenterAlpha + Math.sin(alphaRadiansSin) * DeltaAlpha;
+	}
+
+	function activate(crystals:FlxTypedGroup<Crystal>)
+	{
+		this.crystals = crystals;
+		activated = true;
 	}
 }
