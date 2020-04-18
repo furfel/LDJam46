@@ -16,6 +16,7 @@ class PlayState extends FlxState
 	private var crystals:FlxTypedGroup<Crystal>;
 	private var crystalHolders:FlxTypedGroup<CrystalHolder>;
 	private var crystalPointers:FlxTypedGroup<CrystalTargetPointer>;
+	private var hud:HUD;
 
 	public var collisions:FlxTypedGroup<FlxObject> = new FlxTypedGroup<FlxObject>(1000);
 
@@ -24,6 +25,8 @@ class PlayState extends FlxState
 		super.create();
 		new map.Map(this);
 		add(collisions);
+
+		add(hud = new HUD());
 	}
 
 	public function setPlayer(player:Player)
@@ -67,5 +70,19 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		FlxG.collide(player, collisions);
 		FlxG.collide(player, crystalHolders);
+
+		if (FlxG.keys.anyPressed([Q]))
+		{
+			hud.leftBottle.setColor(FlxG.random.float() * 360.0);
+		}
+		else if (FlxG.keys.anyPressed([W]))
+		{
+			hud.rightBottle.setColor(FlxG.random.float() * 360.0);
+		}
+
+		if (FlxG.keys.anyPressed([A]))
+			hud.leftBottle.mixWith(hud.rightBottle.dumpHue(hud.leftBottle.getHue()));
+		else if (FlxG.keys.anyPressed([D]))
+			hud.rightBottle.mixWith(hud.leftBottle.dumpHue(hud.rightBottle.getHue()));
 	}
 }
