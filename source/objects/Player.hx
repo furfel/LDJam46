@@ -22,6 +22,7 @@ class Player extends FlxSprite
 		animation.add("mr", [6, 7, 8, 7]);
 		animation.add("mu", [9, 10, 11, 10]);
 		animation.play("d");
+		facing = FlxObject.DOWN;
 	}
 
 	override function update(elapsed:Float)
@@ -29,6 +30,20 @@ class Player extends FlxSprite
 		super.update(elapsed);
 		getKeys();
 		move();
+		castSpell();
+		if (cooldown > 0)
+			cooldown -= elapsed;
+	}
+
+	private var cooldown:Float = 1;
+
+	private function castSpell()
+	{
+		if (spell && cooldown <= 0)
+		{
+			FlxG.state.add(new Fireball(x, y, facing, LARGE));
+			cooldown = 1;
+		}
 	}
 
 	private function animate(motion:Bool)
@@ -92,6 +107,7 @@ class Player extends FlxSprite
 	private var down:Bool;
 	private var left:Bool;
 	private var right:Bool;
+	private var spell:Bool;
 
 	private function getKeys()
 	{
@@ -99,6 +115,7 @@ class Player extends FlxSprite
 		down = press(FlxKey.S);
 		left = press(FlxKey.A);
 		right = press(FlxKey.D);
+		spell = press(FlxKey.O);
 		if (up && down)
 			up = down = false;
 		if (left && right)
