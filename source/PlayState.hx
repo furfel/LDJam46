@@ -10,6 +10,8 @@ import objects.*;
 
 class PlayState extends FlxState
 {
+	private var bucketsAmount:Int = 6;
+
 	private var player:Player;
 	private var portal:Portal;
 	private var portalHolder:PortalHolder;
@@ -59,7 +61,11 @@ class PlayState extends FlxState
 			crystalPointers.add(crystal.getTargetPointer());
 		});
 
-		add(this.crystal)
+		add(this.colorBuckets = new FlxTypedGroup<ColorBucket>(bucketsAmount));
+		for (b in ColorBucket.createBuckets(bucketsAmount, this.portal))
+		{
+			this.colorBuckets.add(b);
+		}
 	}
 
 	public function addCollision(object:FlxObject)
@@ -74,6 +80,44 @@ class PlayState extends FlxState
 		super.update(elapsed);
 		FlxG.collide(player, collisions);
 		FlxG.collide(player, crystalHolders);
+		FlxG.collide(player, colorBuckets);
+
+		if (!(FlxG.mouse.pressed && FlxG.mouse.pressedRight))
+		{
+			if (FlxG.mouse.pressed && hud.leftBottle.getHue() >= 0.0 && !hud.leftBottle.isLocked())
+				crystalHolders.forEach(holder ->
+				{
+					if (holder.checkCrystalClicked(player))
+						trace("Left clicked on crystal!");
+				});
+			else if (FlxG.mouse.pressedRight && hud.rightBottle.getHue() >= 0.0 && !hud.rightBottle.isLocked())
+				crystalHolders.forEach(holder ->
+				{
+					if (holder.checkCrystalClicked(player))
+						trace("Right clicked on crystal!");
+				});
+
+			if (FlxG.mouse.pressed && hud.leftBottle.getHue() < 0.0 && !hud.leftBottle.isLocked())
+			{
+				colorBuckets.forEach(bucket ->
+				{
+					if (bucket.checkClicked(player))
+					{
+						hud.leftBottle.setColor(bucket.getHue());
+					}
+				});
+			}
+			else if (FlxG.mouse.pressedRight && hud.rightBottle.getHue() < 0.0 && !hud.rightBottle.isLocked())
+			{
+				colorBuckets.forEach(bucket ->
+				{
+					if (bucket.checkClicked(player))
+					{
+						hud.rightBottle.setColor(bucket.getHue());
+					}
+				});
+			}
+		}
 
 		if (FlxG.keys.anyPressed([Q]))
 			hud.leftBottle.mixWith(hud.rightBottle.dumpHue(hud.leftBottle.getHue()));

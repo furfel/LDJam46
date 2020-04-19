@@ -101,4 +101,9 @@ class BottleWithFluid extends FlxTypedGroup<FlxSprite>
 	{
 		return hue;
 	}
+
+	public function isLocked():Bool
+	{
+		return locked;
+	}
 }

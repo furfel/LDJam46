@@ -18,6 +18,8 @@ class Player extends FlxSprite
 		return new Player(o.x, o.y);
 	}
 
+	private var centralPoint:FlxPoint = new FlxPoint(0, 0);
+
 	public function new(X:Float, Y:Float)
 	{
 		super(X, Y);
@@ -31,6 +33,7 @@ class Player extends FlxSprite
 		animation.add("mu", [9, 10, 9, 11], 10);
 		animation.add("su", [9], 2);
 		animation.play("sd");
+		centralPoint.set(X + 27 / 2, Y + 33 / 2);
 	}
 
 	private var directionangle = 0.0;
@@ -53,6 +56,7 @@ class Player extends FlxSprite
 		directionangle = getDirection(point);
 		getKeys();
 		move();
+		centralPoint.set(x + 27 / 2, y + 33 / 2);
 	}
 
 	private function animate(motion:Bool)
@@ -140,5 +144,10 @@ class Player extends FlxSprite
 	private inline function press(?key:flixel.input.keyboard.FlxKey, ?keys:Array<flixel.input.keyboard.FlxKey>):Bool
 	{
 		return if (key != null) FlxG.keys.anyPressed([key]); else if (keys != null) FlxG.keys.anyPressed(keys); else false;
+	}
+
+	public function getCentralPoint():FlxPoint
+	{
+		return centralPoint;
 	}
 }

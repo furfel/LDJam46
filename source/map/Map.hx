@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.addons.editors.tiled.*;
 import flixel.addons.tile.FlxTilemapExt;
+import flixel.math.FlxRandom;
 import objects.Player;
 import objects.Portal;
 
@@ -24,9 +25,14 @@ class Map
 		var tilesExt = new FlxTilemapExt();
 		tilesExt.loadMapFromArray(tiles.tileArray, map.width, map.height, "assets/images/sprites.png", 32, 32, OFF, 1, 0);
 		state.add(tilesExt);
+
+		var random = new FlxRandom();
 		decors = cast map.getLayer("decors");
 		var decorsExt = new FlxTilemapExt();
 		decorsExt.loadMapFromArray(tiles.tileArray, map.width, map.height, "assets/images/sprites.png", 32, 32, OFF, 1, 0);
+		for (ix in 1...decorsExt.widthInTiles - 1)
+			for (iy in 1...decorsExt.heightInTiles - 1)
+				decorsExt.setTile(ix, iy, random.float() < 0.02 ? 11 : random.float() > 0.98 ? 21 : 0, true);
 		state.add(decorsExt);
 
 		for (o in objects.objects)
