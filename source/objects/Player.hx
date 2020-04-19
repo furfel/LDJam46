@@ -68,6 +68,7 @@ class Player extends FlxSprite
 	public function lock()
 	{
 		locked = true;
+		velocity.set(0, 0);
 	}
 
 	private function animate(motion:Bool)
@@ -105,20 +106,20 @@ class Player extends FlxSprite
 
 		if (up)
 		{
-			velx = 400;
+			velx = 300;
 		}
 		else if (down)
 		{
-			velx = -300;
+			velx = -200;
 		}
 
 		if (left)
 		{
-			vely = -300;
+			vely = -200;
 		}
 		else if (right)
 		{
-			vely = 300;
+			vely = 200;
 		}
 
 		if (up || down || left || right)

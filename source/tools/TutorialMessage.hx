@@ -66,6 +66,7 @@ class TutorialMessage extends FlxTypedGroup<FlxSprite>
 
 	private function nextTip()
 	{
+		FlxG.sound.play("assets/sounds/click.wav");
 		prev.visible = true;
 		if (tip < TIPS.length - 1)
 			tip++;
@@ -79,6 +80,7 @@ class TutorialMessage extends FlxTypedGroup<FlxSprite>
 
 	private function prevTip()
 	{
+		FlxG.sound.play("assets/sounds/click.wav");
 		next.visible = true;
 		if (tip > 0)
 			tip--;
@@ -96,6 +98,7 @@ class TutorialMessage extends FlxTypedGroup<FlxSprite>
 
 	private function play()
 	{
+		FlxG.sound.play("assets/sounds/click.wav");
 		FlxG.switchState(new SettingsState());
 	}
 }

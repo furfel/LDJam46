@@ -53,6 +53,7 @@ class BottleWithFluid extends FlxTypedGroup<FlxSprite>
 	{
 		if (!locked && hue >= 0.0 && this.hue >= 0.0)
 		{
+			FlxG.sound.play("assets/sounds/mix.ogg");
 			var colorset = (this.hue + hue) / 2.0;
 			if (Math.abs(this.hue - hue) > 180.0)
 			{

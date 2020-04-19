@@ -29,6 +29,7 @@ class MenuState extends FlxUIState
 		super.getEvent(id, sender, data, params);
 		if (id == "click_button")
 		{
+			FlxG.sound.play("assets/sounds/click.wav");
 			var i:Int = cast params[0];
 			switch (i)
 			{

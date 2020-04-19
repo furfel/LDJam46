@@ -4,6 +4,10 @@
 	<definition id="btn" width="230" height="60"/>
     <definition id="sans20" font="vera" size="20" style="bold" color="0x222222" outline="0xffffff" align="center" />
 	
+    <sprite id="logo" src="logo" y="12">
+        <anchor x="50%" x-flush="center" />
+    </sprite>
+
     <button id="butt_9" label="Tutorial" use_def="btn">
 		<anchor y="40%" x="50%" x-flush="center"/>
 		<param type="int" value="1"/>

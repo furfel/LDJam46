@@ -28,11 +28,13 @@ class SettingsState extends FlxUIState
 
 	private function playGame()
 	{
+		FlxG.sound.play("assets/sounds/click.wav");
 		FlxG.switchState(new PlayState(minutes * 10, buckets));
 	}
 
 	private function updateText()
 	{
+		FlxG.sound.play("assets/sounds/click.wav");
 		var btn:FlxUIButton = cast this._ui.getAsset("play");
 		if (btn != null)
 		{

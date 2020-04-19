@@ -4,11 +4,15 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.effects.chainable.FlxRainbowEffect;
+import flixel.addons.transition.TransitionData;
+import flixel.addons.transition.TransitionFade;
 import flixel.group.FlxGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.system.debug.console.ConsoleUtil;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
 import objects.*;
 
 class PlayState extends FlxState
@@ -143,6 +147,19 @@ class PlayState extends FlxState
 	private function postIvee(tw:FlxTween)
 	{
 		message.showMessage("Thank you for saving me oh dear!");
+		var overlay = new FlxSprite(0, 0);
+		overlay.scrollFactor.set(0, 0);
+		overlay.makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
+		overlay.alpha = 0;
+		add(overlay);
+		FlxTween.tween(overlay, {alpha: 1}, 3.0, {
+			ease: FlxEase.backIn,
+			type: ONESHOT,
+			onComplete: tw ->
+			{
+				FlxG.switchState(new MenuState());
+			}
+		});
 	}
 
 	override public function update(elapsed:Float)
@@ -197,6 +214,7 @@ class PlayState extends FlxState
 				{
 					if (bucket.checkClicked(player))
 					{
+						FlxG.sound.play("assets/sounds/takewater.ogg");
 						hud.leftBottle.setColor(bucket.getHue());
 					}
 				});
@@ -207,6 +225,7 @@ class PlayState extends FlxState
 				{
 					if (bucket.checkClicked(player))
 					{
+						FlxG.sound.play("assets/sounds/takewater.ogg");
 						hud.rightBottle.setColor(bucket.getHue());
 					}
 				});
