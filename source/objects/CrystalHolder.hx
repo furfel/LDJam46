@@ -58,10 +58,11 @@ class CrystalHolder extends FlxSprite
 
 	public function checkCrystalClicked(player:Player):Bool
 	{
-		if (inCoords())
-		{
-			trace("distance = " + centralPoint.distanceTo(player.getCentralPoint()));
-		}
 		return inCoords() && centralPoint.distanceTo(player.getCentralPoint()) < MIN_DISTANCE;
+	}
+
+	public function getCrystal():Crystal
+	{
+		return crystal;
 	}
 }

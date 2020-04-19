@@ -21,6 +21,7 @@ class PlayState extends FlxState
 	private var colorBuckets:FlxTypedGroup<ColorBucket>;
 
 	private var hud:HUD;
+	private var message:tools.Message;
 
 	public var collisions:FlxTypedGroup<FlxObject> = new FlxTypedGroup<FlxObject>(1000);
 
@@ -31,6 +32,8 @@ class PlayState extends FlxState
 		add(collisions);
 
 		add(hud = new HUD());
+		add(message = new tools.Message());
+		message.showMessage("Welcome!");
 	}
 
 	public function setPlayer(player:Player)
@@ -75,6 +78,17 @@ class PlayState extends FlxState
 		collisions.add(object);
 	}
 
+	private var stage2:Bool = false;
+
+	private function checkPortalActivation()
+	{
+		if (portal.activate(crystals))
+		{
+			message.showMessage("Portal is now activated.\nKeep it alive by refilling crystals!");
+			stage2 = true;
+		}
+	}
+
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -88,13 +102,19 @@ class PlayState extends FlxState
 				crystalHolders.forEach(holder ->
 				{
 					if (holder.checkCrystalClicked(player))
-						trace("Left clicked on crystal!");
+					{
+						holder.getCrystal().setColor(hud.leftBottle.dumpHue(1.0));
+						checkPortalActivation();
+					}
 				});
 			else if (FlxG.mouse.pressedRight && hud.rightBottle.getHue() >= 0.0 && !hud.rightBottle.isLocked())
 				crystalHolders.forEach(holder ->
 				{
 					if (holder.checkCrystalClicked(player))
-						trace("Right clicked on crystal!");
+					{
+						holder.getCrystal().setColor(hud.rightBottle.dumpHue(1.0));
+						checkPortalActivation();
+					}
 				});
 
 			if (FlxG.mouse.pressed && hud.leftBottle.getHue() < 0.0 && !hud.leftBottle.isLocked())

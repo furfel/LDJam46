@@ -98,7 +98,7 @@ class ColorBucket extends FlxTypedGroup<FlxSprite>
 
 	private inline function inCoords():Bool
 	{
-		return FlxG.mouse.getWorldPosition().inCoords(bucketback.x, bucketback.y, bucketback.width, 0 + bucketfront.height);
+		return FlxG.mouse.getWorldPosition().inCoords(bucketback.x, bucketback.y, bucketback.width, 30 + bucketfront.height);
 	}
 
 	private function moreTweens(tween:FlxTween)

@@ -56,22 +56,35 @@ class Portal extends FlxSprite
 		hue += ANGLE_SPEED * elapsed;
 		if (hue >= 360)
 			hue -= 360;
-		color = FlxColor.fromHSL(hue, 0.75, 0.75);
+		color = FlxColor.fromHSL(hue, getCurrentSaturation(), 0.75);
 
 		alphaRadiansSin += ALPHA_SPEED_RAD * elapsed;
 		alpha = CENTER_ALPHA + Math.sin(alphaRadiansSin) * DELTA_ALPHA;
 	}
 
-	public function activate(crystals:FlxTypedGroup<Crystal>)
+	public function activate(crystals:FlxTypedGroup<Crystal>):Bool
 	{
+		if (activated)
+			return false;
 		this.crystals = crystals;
-		activated = true;
+		var act = true;
+		crystals.forEach(cr ->
+		{
+			if (cr.hueDistance() < 0.9)
+				act = false;
+		});
+		activated = act;
+		return act;
 	}
 
 	function getCurrentSaturation():Float
 	{
-		if (crystals != null) {}
-		return MIN_SATURATION;
+		var sum = 0.0;
+		if (crystals != null)
+		{
+			crystals.forEach(cr -> sum += cr.hueDistance(hue));
+		}
+		return MIN_SATURATION + DELTA_SATURATION * sum / 4.5;
 	}
 
 	private inline function hueWeight(hue:Float, crystal:Crystal)

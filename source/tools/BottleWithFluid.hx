@@ -52,7 +52,19 @@ class BottleWithFluid extends FlxTypedGroup<FlxSprite>
 	public function mixWith(hue:Float)
 	{
 		if (!locked && hue >= 0.0 && this.hue >= 0.0)
-			setColor((this.hue + hue) / 2.0);
+		{
+			var colorset = (this.hue + hue) / 2.0;
+			if (Math.abs(this.hue - hue) > 180.0)
+			{
+				colorset = 180.0 - colorset;
+				if (colorset < 0.0)
+					colorset += 360.0;
+				setColor(colorset);
+			}
+			else
+				setColor(colorset);
+			trace("Mixing " + hue + " + " + this.hue + " = " + newColor);
+		}
 	}
 
 	private function animate1()
