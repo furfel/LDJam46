@@ -2,10 +2,13 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxObject;
+import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.system.debug.console.ConsoleUtil;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import objects.*;
 
 class PlayState extends FlxState
@@ -22,8 +25,17 @@ class PlayState extends FlxState
 
 	private var hud:HUD;
 	private var message:tools.Message;
+	private var timer:tools.Timer;
+	private var targetTime:Float;
 
 	public var collisions:FlxTypedGroup<FlxObject> = new FlxTypedGroup<FlxObject>(1000);
+
+	override public function new(time:Int, bucketsCount:Int)
+	{
+		super();
+		targetTime = time;
+		bucketsAmount = bucketsCount;
+	}
 
 	override public function create()
 	{
@@ -32,8 +44,9 @@ class PlayState extends FlxState
 		add(collisions);
 
 		add(hud = new HUD());
+		add(timer = new tools.Timer());
 		add(message = new tools.Message());
-		message.showMessage("Welcome!");
+		message.showMessage("First, fill the crystals to activate the portal.");
 	}
 
 	public function setPlayer(player:Player)
@@ -84,14 +97,75 @@ class PlayState extends FlxState
 	{
 		if (portal.activate(crystals))
 		{
-			message.showMessage("Portal is now activated.\nKeep it alive by refilling crystals!");
+			message.showMessage("Portal is now activated. Keep it alive by refilling crystals with proper colors!");
 			stage2 = true;
 		}
+	}
+
+	private var gameOver = false;
+	private var gameOverCountdown = 5.0;
+
+	private function updateStage2(elapsed:Float)
+	{
+		if (!stage2 || gameOver || winned)
+			return;
+
+		targetTime -= elapsed;
+		timer.updateTime(Math.ceil(targetTime));
+		if (targetTime <= 0.0)
+		{
+			winGame();
+		}
+
+		if (portal.checkDeath())
+		{
+			message.showMessage("The portal died :(.");
+			gameOver = true;
+			player.kill();
+		}
+	}
+
+	private var winned:Bool = false;
+
+	private function winGame()
+	{
+		var ivee = new FlxSprite(portal.getMidpoint().x - 192 / 2, portal.getMidpoint().y - 192 / 2);
+		ivee.loadGraphic("assets/images/ivee.png", false, 192, 192);
+		ivee.alpha = 0;
+		ivee.scale.x = 0.75;
+		ivee.scale.y = 0.75;
+		add(ivee);
+		FlxTween.tween(ivee, {alpha: 0.75, "scale.x": 1, "scale.y": 1}, 5.0, {ease: FlxEase.cubeIn, type: ONESHOT, onComplete: postIvee});
+		winned = true;
+		player.lock();
+	}
+
+	private function postIvee(tw:FlxTween)
+	{
+		message.showMessage("Thank you for saving me oh dear!");
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		updateStage2(elapsed);
+
+		if (gameOver)
+		{
+			gameOverCountdown -= elapsed;
+			if (gameOverCountdown <= 0.0)
+				FlxG.switchState(new MenuState());
+			FlxG.camera.follow(null);
+			return;
+		}
+		else if (winned)
+		{
+			FlxG.camera.follow(null);
+			FlxG.camera.focusOn(portal.getMidpoint());
+			return;
+		}
+
 		FlxG.collide(player, collisions);
 		FlxG.collide(player, crystalHolders);
 		FlxG.collide(player, colorBuckets);
@@ -143,5 +217,9 @@ class PlayState extends FlxState
 			hud.leftBottle.mixWith(hud.rightBottle.dumpHue(hud.leftBottle.getHue()));
 		else if (FlxG.keys.anyPressed([E]))
 			hud.rightBottle.mixWith(hud.leftBottle.dumpHue(hud.rightBottle.getHue()));
+		else if (FlxG.keys.anyPressed([Z]))
+			hud.leftBottle.flushBottle();
+		else if (FlxG.keys.anyPressed([X]))
+			hud.rightBottle.flushBottle();
 	}
 }

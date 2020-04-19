@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	
+	<definition id="btn" width="230" height="60"/>
+    <definition id="btn2" width="120" height="32" />
+    <definition id="sans16" font="vera" size="16" style="bold" color="0xffffff" outline="0x222222" align="center"  />
+    <definition id="sans12" font="vera" size="12" style="bold" color="0xffffff" outline="0x222222" align="center"  />
+	
+    <definition id="radio_1">
+		<text use_def="sans16" color="0x222222">
+			<color id="over" value="0xdddddd"/>
+		</text>
+	</definition>
+
+    <text text="Easy" use_def="sans16" x="10%" y="32" />
+    <text text="Medium" use_def="sans16" x="45%" y="32" />
+    <text text="Hard" use_def="sans16" x="75%" y="32" />
+
+        <button id="3m" label="3 Mins" use_def="btn2" x="10%" y="72">
+            <param type="string" value="minutes:3"/>
+            <text use_def="sans16" />
+        </button>
+
+        <button id="7m" label="7 Mins" use_def="btn2" x="45%" y="72">
+            <param type="string" value="minutes:7"/>
+            <text use_def="sans16" />
+        </button>
+
+        <button id="10m" label="10 Mins" use_def="btn2" x="75%" y="72">
+            <param type="string" value="minutes:10"/>
+            <text use_def="sans16" />
+        </button>
+
+        <button id="6b" label="6 Buckets" use_def="btn2" x="10%" y="156">
+            <param type="string" value="buckets:6"/>
+            <text use_def="sans16" />
+        </button>
+
+        <button id="3b" label="3 Buckets" use_def="btn2" x="45%" y="156">
+            <param type="string" value="buckets:3"/>
+            <text use_def="sans16" />
+        </button>
+
+        <button id="10m" label="5 Buckets" use_def="btn2" x="75%" y="156">
+            <param type="string" value="buckets:5"/>
+            <text use_def="sans16" />
+        </button>
+    
+
+	<button id="play" label="Play: 3 Minutes &amp; 6 Buckets" use_def="btn" y="256">
+        <anchor x="50%" x-flush="center" y="512" />
+		<param type="string" value="play" />
+        <text use_def="sans12" />
+	</button>
+	
+	</data>

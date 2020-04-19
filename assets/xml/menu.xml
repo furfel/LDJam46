@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	
+	<definition id="btn" width="230" height="60"/>
+    <definition id="sans20" font="vera" size="20" style="bold" color="0x222222" outline="0xffffff" align="center" />
+	
+    <button id="butt_9" label="Tutorial" use_def="btn">
+		<anchor y="40%" x="50%" x-flush="center"/>
+		<param type="int" value="1"/>
+        <text use_def="sans20" />
+	</button>
+
+	<button id="butt_0" label="Play" use_def="btn">
+		<anchor y="60%" x="50%" x-flush="center"/>
+		<param type="int" value="2"/>
+        <text use_def="sans20" />
+	</button>
+	
+	</data>

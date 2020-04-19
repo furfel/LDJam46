@@ -67,13 +67,18 @@ class BottleWithFluid extends FlxTypedGroup<FlxSprite>
 		}
 	}
 
+	public function flushBottle()
+	{
+		dumpHue(1.0);
+	}
+
 	private function animate1()
 	{
 		if (locked)
 			return;
 		locked = true;
-		FlxTween.linearMotion(fluid, fluid.x, fluid.y, fluid.x, FlxG.height + 32.0 + 64.0, 1.0, true, {ease: FlxEase.backIn, type: ONESHOT});
-		FlxTween.linearMotion(bottle, bottle.x, bottle.y, bottle.x, FlxG.height + 32.0, 1.0, true, {
+		FlxTween.linearMotion(fluid, fluid.x, fluid.y, fluid.x, FlxG.height + 32.0 + 64.0, 0.4, true, {ease: FlxEase.backIn, type: ONESHOT});
+		FlxTween.linearMotion(bottle, bottle.x, bottle.y, bottle.x, FlxG.height + 32.0, 0.4, true, {
 			ease: FlxEase.backIn,
 			type: ONESHOT,
 			onComplete: animate2
@@ -85,8 +90,8 @@ class BottleWithFluid extends FlxTypedGroup<FlxSprite>
 		hue = newColor;
 		fluid.color = FlxColor.fromHSL(hue, 0.8, 0.8);
 		fluid.alpha = newAlpha;
-		FlxTween.linearMotion(fluid, fluid.x, fluid.y, fluid.x, originY + 64.0, 1.0, true, {ease: FlxEase.backIn, type: ONESHOT});
-		FlxTween.linearMotion(bottle, bottle.x, bottle.y, bottle.x, originY, true, {ease: FlxEase.backIn, onComplete: animate3, type: ONESHOT});
+		FlxTween.linearMotion(fluid, fluid.x, fluid.y, fluid.x, originY + 64.0, 0.4, true, {ease: FlxEase.backIn, type: ONESHOT});
+		FlxTween.linearMotion(bottle, bottle.x, bottle.y, bottle.x, originY, 0.4, true, {ease: FlxEase.backIn, onComplete: animate3, type: ONESHOT});
 	}
 
 	private var newAlpha = 0.0;

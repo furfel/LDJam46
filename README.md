@@ -2,8 +2,7 @@
 
 The theme is "Keep it alive".
 
-### Worth reading
-http://www.jeffreythompson.org/collision-detection/circle-rect.php
+Somewhat tutorial added.
 
 ### Naps are good
 After a nap, I finally know what I want to do!

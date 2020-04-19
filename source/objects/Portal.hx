@@ -77,6 +77,22 @@ class Portal extends FlxSprite
 		return act;
 	}
 
+	public function checkDeath():Bool
+	{
+		if (!activated)
+			return false;
+
+		var dead = false;
+
+		crystals.forEach(cr ->
+		{
+			if (cr.hueDistance() < 0.7)
+				dead = true;
+		});
+
+		return dead;
+	}
+
 	function getCurrentSaturation():Float
 	{
 		var sum = 0.0;

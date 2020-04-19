@@ -2,6 +2,7 @@ package objects;
 
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
+import flixel.math.FlxRandom;
 import flixel.util.FlxColor;
 
 class Crystal extends FlxSprite
@@ -13,6 +14,10 @@ class Crystal extends FlxSprite
 	public static final OFF_SATURATION = 0.1;
 	public static final DELTA_SATURATION = DEFAULT_SATURATION - OFF_SATURATION;
 	public static final DELTA_LIGHTNESS = DEFAULT_LIGHTNESS - OFF_LIGHTNESS;
+	public static final MIN_STABILITY = 16.0;
+	public static final DELTA_STABILITY = 7.0;
+	public static final WEAR_OFF_MIN = 1.2;
+	public static final WEAR_OFF_DELTA = 1.5;
 
 	public static function CreateCrystalsOnPortal(portal:Portal):Array<Crystal>
 	{
@@ -42,6 +47,8 @@ class Crystal extends FlxSprite
 	private var targetHue:Float;
 	private var currentHue:Float;
 
+	private var stability:Float = 100000.0;
+
 	public function new(X:Float, Y:Float, targetHue:Float, ?targetPointer:CrystalTargetPointer)
 	{
 		super(X, Y);
@@ -61,6 +68,7 @@ class Crystal extends FlxSprite
 	public function setColor(newhue:Float)
 	{
 		currentHue = newhue;
+		stability = MIN_STABILITY + random.float() * DELTA_STABILITY;
 		trace("Hue distance = " + hueDistance());
 	}
 
@@ -90,6 +98,32 @@ class Crystal extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		if (stability > 0)
+			stability -= elapsed;
+		else
+		{
+			destabilizeCrystal(elapsed);
+		}
 		updateColor(hueDistance());
+	}
+
+	private var random = new FlxRandom();
+
+	function destabilizeCrystal(elapsed:Float)
+	{
+		if (targetHue >= 180.0)
+		{
+			if (currentHue < targetHue - 180.0)
+				currentHue += elapsed * (WEAR_OFF_MIN + WEAR_OFF_DELTA * random.float());
+			else if (currentHue > targetHue - 180.0)
+				currentHue -= elapsed * (WEAR_OFF_MIN + WEAR_OFF_DELTA * random.float());
+		}
+		else
+		{
+			if (currentHue < targetHue + 180.0)
+				currentHue += elapsed * (WEAR_OFF_MIN + WEAR_OFF_DELTA * random.float());
+			else if (currentHue > targetHue + 180.0)
+				currentHue -= elapsed * (WEAR_OFF_MIN + WEAR_OFF_DELTA * random.float());
+		}
 	}
 }

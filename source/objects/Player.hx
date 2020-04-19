@@ -34,6 +34,7 @@ class Player extends FlxSprite
 		animation.add("su", [9], 2);
 		animation.play("sd");
 		centralPoint.set(X + 27 / 2, Y + 33 / 2);
+		alive = true;
 	}
 
 	private var directionangle = 0.0;
@@ -50,13 +51,23 @@ class Player extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		if (!alive)
+			return;
 		super.update(elapsed);
 
 		var point = FlxG.mouse.getWorldPosition();
 		directionangle = getDirection(point);
 		getKeys();
-		move();
+		if (!locked)
+			move();
 		centralPoint.set(x + 27 / 2, y + 33 / 2);
+	}
+
+	var locked = false;
+
+	public function lock()
+	{
+		locked = true;
 	}
 
 	private function animate(motion:Bool)
@@ -94,20 +105,20 @@ class Player extends FlxSprite
 
 		if (up)
 		{
-			velx = 200;
+			velx = 400;
 		}
 		else if (down)
 		{
-			velx = -200;
+			velx = -300;
 		}
 
 		if (left)
 		{
-			vely = -200;
+			vely = -300;
 		}
 		else if (right)
 		{
-			vely = 200;
+			vely = 300;
 		}
 
 		if (up || down || left || right)
