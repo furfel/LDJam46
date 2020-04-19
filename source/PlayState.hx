@@ -80,9 +80,9 @@ class PlayState extends FlxState
 			hud.rightBottle.setColor(FlxG.random.float() * 360.0);
 		}
 
-		if (FlxG.keys.anyPressed([A]))
+		if (FlxG.keys.anyPressed([Q]))
 			hud.leftBottle.mixWith(hud.rightBottle.dumpHue(hud.leftBottle.getHue()));
-		else if (FlxG.keys.anyPressed([D]))
+		else if (FlxG.keys.anyPressed([E]))
 			hud.rightBottle.mixWith(hud.leftBottle.dumpHue(hud.rightBottle.getHue()));
 	}
 }
