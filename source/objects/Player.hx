@@ -21,19 +21,26 @@ class Player extends FlxSprite
 	public function new(X:Float, Y:Float)
 	{
 		super(X, Y);
-		loadGraphic("assets/images/playerrot.png", true, 32, 32);
-		animation.add("m", [0, 1, 0, 2], 10);
-		animation.add("s", [0], 2);
-		animation.play("s");
-		angle = 0;
+		loadGraphic("assets/images/player.png", true, 27, 33);
+		animation.add("md", [0, 1, 0, 2], 10);
+		animation.add("sd", [0], 2);
+		animation.add("ml", [3, 4, 3, 5], 10);
+		animation.add("sl", [3], 2);
+		animation.add("mr", [6, 7, 6, 8], 10);
+		animation.add("sr", [6], 2);
+		animation.add("mu", [9, 10, 9, 11], 10);
+		animation.add("su", [9], 2);
+		animation.play("sd");
 	}
+
+	private var directionangle = 0.0;
 
 	private function getDirection(point:FlxPoint):Float
 	{
 		var cpoint = new FlxPoint(this.x + this.width / 2.0, this.y + this.height / 2.0);
 		var dist = cpoint.distanceTo(point);
 		if (dist <= 0.05)
-			return angle;
+			return directionangle;
 		var relpoint = point.subtractPoint(cpoint);
 		return Math.atan2(relpoint.y, relpoint.x) * (180 / Math.PI);
 	}
@@ -43,7 +50,7 @@ class Player extends FlxSprite
 		super.update(elapsed);
 
 		var point = FlxG.mouse.getWorldPosition();
-		angle = getDirection(point);
+		directionangle = getDirection(point);
 		getKeys();
 		move();
 	}
@@ -53,6 +60,24 @@ class Player extends FlxSprite
 		var an:String = "s";
 		if (motion)
 			an = "m";
+		var dir = directionangle;
+
+		// Normalization
+		while (dir < 0.0)
+			dir += 360.0;
+		while (dir > 360.0)
+			dir -= 360.0;
+
+		if (dir >= 0.0 && dir <= 45.0)
+			an += "r";
+		else if (dir > 45.0 && dir <= 135.0)
+			an += "d";
+		else if (dir > 135.0 && dir <= 135.0 + 90.0)
+			an += "l";
+		else if (dir > 135.0 + 90.0 && dir <= 135.0 + 180.0)
+			an += "u";
+		else
+			an += "r";
 		animation.play(an);
 	}
 
@@ -96,7 +121,7 @@ class Player extends FlxSprite
 			animate(false);
 		}
 
-		velocity.rotate(FlxPoint.weak(0, 0), angle);
+		velocity.rotate(FlxPoint.weak(0, 0), directionangle);
 	}
 
 	private var up:Bool;
