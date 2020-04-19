@@ -14,7 +14,7 @@ class SettingsState extends FlxUIState
 	private var playLength:FlxUIRadioGroup;
 
 	private var buckets = 6;
-	private var minutes = 1;
+	private var minutes = 3;
 
 	override public function create()
 	{
@@ -29,7 +29,7 @@ class SettingsState extends FlxUIState
 	private function playGame()
 	{
 		FlxG.sound.play("assets/sounds/click.wav");
-		FlxG.switchState(new PlayState(minutes * 10, buckets));
+		FlxG.switchState(new PlayState(minutes * 60, buckets));
 	}
 
 	private function updateText()

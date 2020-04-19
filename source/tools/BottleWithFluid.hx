@@ -106,6 +106,7 @@ class BottleWithFluid extends FlxTypedGroup<FlxSprite>
 	{
 		if (!locked && hue >= 0.0 && targetHue >= 0.0)
 		{
+			FlxG.sound.play("assets/sounds/pour.ogg");
 			var oldhue = hue;
 			this.newColor = -1.0;
 			newAlpha = 0;

@@ -31,7 +31,7 @@ class TutorialMap
 		tilesExt.loadMapFromArray(tiles.tileArray, map.width, map.height, "assets/images/sprites.png", 32, 32, OFF, 1, 0);
 		state.add(tilesExt);
 
-		var buckets = new FlxTypedGroup<ColorBucket>(2);
+		var buckets = state.getBuckets();
 		state.add(buckets);
 
 		for (o in objects.objects)

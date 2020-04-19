@@ -31,6 +31,11 @@ class TutorialState extends FlxState
 		add(tutorialMessage = new TutorialMessage());
 	}
 
+	public function getBuckets():FlxTypedGroup<ColorBucket>
+	{
+		return buckets;
+	}
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -43,6 +48,7 @@ class TutorialState extends FlxState
 		{
 			if (FlxG.mouse.pressed && hud.leftBottle.getHue() >= 0.0 && !hud.leftBottle.isLocked())
 			{
+				trace("Left bottle");
 				if (holder.checkCrystalClicked(player))
 				{
 					holder.getCrystal().setColor(hud.leftBottle.dumpHue(1.0));
@@ -62,6 +68,7 @@ class TutorialState extends FlxState
 				{
 					if (bucket.checkClicked(player))
 					{
+						FlxG.sound.play("assets/sounds/takewater.ogg");
 						hud.leftBottle.setColor(bucket.getHue());
 					}
 				});
@@ -72,11 +79,21 @@ class TutorialState extends FlxState
 				{
 					if (bucket.checkClicked(player))
 					{
+						FlxG.sound.play("assets/sounds/takewater.ogg");
 						hud.rightBottle.setColor(bucket.getHue());
 					}
 				});
 			}
 		}
+
+		if (FlxG.keys.anyPressed([Q]))
+			hud.leftBottle.mixWith(hud.rightBottle.dumpHue(hud.leftBottle.getHue()));
+		else if (FlxG.keys.anyPressed([E]))
+			hud.rightBottle.mixWith(hud.leftBottle.dumpHue(hud.rightBottle.getHue()));
+		else if (FlxG.keys.anyPressed([Z]))
+			hud.leftBottle.flushBottle();
+		else if (FlxG.keys.anyPressed([X]))
+			hud.rightBottle.flushBottle();
 	}
 
 	public function setPlayer(player:Player)
